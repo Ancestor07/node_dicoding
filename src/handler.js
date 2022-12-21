@@ -67,7 +67,11 @@ const addBookHandler = (request, h) => {
 const getBooksHandler = () => ({
     status: "success",
     data: {
-        books: books
+        books: books.map((book) => ({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher,
+        })),
     }
 })
 const getBookByIDHandler = (request, h) => {
@@ -107,7 +111,7 @@ const updateBookByIDHandler = (request, h) => {
     if (name == undefined || name == "" || name == null) {
         const response = h.response({
             status: 'fail',
-            message: 'Gagal menambahkan buku. Mohon isi nama buku',
+            message: 'Gagal memperbarui buku. Mohon isi nama buku',
         });
         response.code(400);
         return response;
@@ -115,10 +119,18 @@ const updateBookByIDHandler = (request, h) => {
     let { readPage, pageCount } = request.payload
     readPage = parseInt(readPage)
     pageCount = parseInt(pageCount)
+    if (name == undefined || name == "" || name == null) {
+        const response = h.response({
+            status: 'fail',
+            message: 'Gagal memperbarui buku. Mohon isi nama buku',
+        });
+        response.code(400);
+        return response;
+    }
     if (readPage > pageCount) {
         const response = h.response({
             status: 'fail',
-            message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+            message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
         });
         response.code(400);
         return response;
@@ -164,4 +176,4 @@ const deleteBookByIdHandler = (request, h) => {
     response.code(404);
     return response;
 }
-module.exports = { addBookHandler, getBooksHandler, getBookByIDHandler, updateBookByIDHandler, deleteBookByIdHandler}
+module.exports = { addBookHandler, getBooksHandler, getBookByIDHandler, updateBookByIDHandler, deleteBookByIdHandler }
