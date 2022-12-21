@@ -5,8 +5,8 @@ const addBookHandler = (request, h) => {
     const { name, year, author, summary, publisher, } = request.payload
 
     const id = nanoid(16);
-    const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
+    const insertedAt = new Date().toISOString();
+    const updatedAt = insertedAt;
     const finished = false;
     let { reading } = request.payload
     if (reading == "true" || reading == "1") {
@@ -35,7 +35,7 @@ const addBookHandler = (request, h) => {
     }
 
 
-    const newBook = { id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, createdAt, updatedAt }
+    const newBook = { id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt }
 
 
     books.push(newBook)
@@ -46,9 +46,9 @@ const addBookHandler = (request, h) => {
     if (isSuccess) {
         const response = h.response({
             status: 'success',
-            message: 'Catatan berhasil ditambahkan',
+            message: 'Buku berhasil ditambahkan',
             data: {
-                noteId: id,
+                bookId: id,
             },
         })
         response.code(201)
@@ -57,7 +57,7 @@ const addBookHandler = (request, h) => {
 
     const response = h.response({
         status: 'fail',
-        message: 'Catatan gagal ditambahkan',
+        message: 'Buku gagal ditambahkan',
     });
     response.code(500);
     return response;
@@ -65,9 +65,9 @@ const addBookHandler = (request, h) => {
 }
 
 const getBooksHandler = () => ({
-    status: "Success",
+    status: "success",
     data: {
-        books
+        books: books
     }
 })
 const getBookByIDHandler = (request, h) => {
@@ -83,7 +83,7 @@ const getBookByIDHandler = (request, h) => {
 
     }
     const response = h.response({
-        status: "Success",
+        status: "success",
         data: {
             book: book[0]
         }
